@@ -1,0 +1,22 @@
+<h2>Sign in</h2>
+
+<%= form_for(@user, url: account_kit_path, method: :post) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :country_prefix %><br />
+    <%= f.text_field :country_prefix, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :national_number %><br />
+    <%= f.text_field :national_number, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign in" %>
+  </div>
+<% end %>
