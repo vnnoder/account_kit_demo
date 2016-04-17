@@ -17,6 +17,11 @@
   </div>
 </div>
 
+<%= form_tag(account_kit_sessions_path, method: 'post', id: 'my_form') do %>
+  <%= hidden_field_tag(:code) %>
+  <%= hidden_field_tag(:csrf_nonce) %>
+<% end %>
+
 <script>
   (function _(a,b){
     if(!window.AccountKit)
