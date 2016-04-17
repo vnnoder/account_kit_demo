@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'sessions#new'
+  root 'home#index'
 
-  resource :account_kit, only: [:create]
+  namespace :account_kit do
+    resources :sessions, only: [:new, :create]
+  end
 end
