@@ -1,22 +1,81 @@
 <h2>Sign in</h2>
-
-<%= form_for(@user, url: account_kit_path, method: :post) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+<div>
+  <p>Enter country code (e.g. +1):</p>
+  <input type="text" id="country_code" />
+  <p>Enter phone number without spaces (e.g. 444555666):</p>
+  <input type="text" id="phone_num"/>
+  <div>
+    <button onclick="phone_btn_onclick();">Login via SMS</button>
   </div>
-
-  <div class="field">
-    <%= f.label :country_prefix %><br />
-    <%= f.text_field :country_prefix, autocomplete: "off" %>
+</div>
+<hr />
+<div>
+  <p>Enter email address</p>
+  <input type="text" id="email"/>
+  <div>
+    <button onclick="email_btn_onclick();">Login via Email</button>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :national_number %><br />
-    <%= f.text_field :national_number, autocomplete: "off" %>
-  </div>
+<script>
+  (function _(a,b){
+    if(!window.AccountKit)
+      window.AccountKit={
+        doNotLinkToSDKDirectly:'doNotLinkToSDKDirectly'
+        };
+      var i=document.createElement('script');
+      i.src=a;
+      i.async=true;
+      var j=document.getElementsByTagName('script')[0];
+      j.parentNode.insertBefore(i,j);
+  })("https:\/\/sdk.accountkit.com\/en_US\/sdk.js?hash=a0f8341359ecccfdb913e1be2ae5be0a", 1460167107);
 
-  <div class="actions">
-    <%= f.submit "Sign in" %>
-  </div>
-<% end %>
+  var csrf = document.getElementsByName('csrf-token')[0].content;
+
+  // initialize Account Kit with CSRF protection
+  AccountKit_OnInteractive = function(){
+    AccountKit.init(
+      {
+        appId:<%= AccountKit::Config.app_id%>,
+        state: csrf,
+        version:"<%= AccountKit::Config.api_version%>"
+      }
+    );
+  };
+
+  // login callback
+  function loginCallback(response) {
+    console.log(response);
+    if (response.status === "PARTIALLY_AUTHENTICATED") {
+      console.log("code: " + response.code);
+      document.getElementById("code").value = response.code;
+      document.getElementById("csrf_nonce").value = response.state;
+      document.getElementById("my_form").submit();
+    }
+    else if (response.status === "NOT_AUTHENTICATED") {
+      // handle authentication failure
+      console.log(response);
+    }
+    else if (response.status === "BAD_PARAMS") {
+      // handle bad parameters
+    }
+  }
+
+  // phone form submission handler
+  function phone_btn_onclick() {
+    var country_code = document.getElementById("country_code").value;
+    var ph_num = document.getElementById("phone_num").value;
+    AccountKit.login('PHONE',
+      {countryCode: country_code, phoneNumber: ph_num}, // will use default values if this is not specified
+      loginCallback);
+  }
+
+
+  // email form submission handler
+  function email_btn_onclick() {
+    var email_address = document.getElementById("email").value;
+
+    AccountKit.login('EMAIL', {emailAddress: email_address}, loginCallback);
+  }
+
+</script>
