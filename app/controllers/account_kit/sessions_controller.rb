@@ -5,6 +5,7 @@ module AccountKit
     end
 
     def create
+      require_app_secret
       @access_token, @expires_at, @user_id = access_token(params[:code])
       response = AccountKit.me(@access_token)
       json_response = JSON.parse(response.body)
@@ -14,6 +15,12 @@ module AccountKit
     end
 
     private
+
+    def require_app_secret
+      AccountKit.configure do |config|
+        config.require_app_secret = params[:require_app_secret].present?
+      end
+    end
 
     def access_token(code)
       response = AccountKit.access_token(code)
