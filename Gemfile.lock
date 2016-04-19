@@ -1,7 +1,13 @@
+GIT
+  remote: git://github.com/Coffa/account_kit.git
+  revision: ea72a8da925ba70e2073fcaf576244d9ac91fd5a
+  branch: master
+  specs:
+    account_kit (0.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    account_kit (0.1.1)
     actionmailer (4.2.1)
       actionpack (= 4.2.1)
       actionview (= 4.2.1)
@@ -144,7 +150,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  account_kit
+  account_kit!
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
