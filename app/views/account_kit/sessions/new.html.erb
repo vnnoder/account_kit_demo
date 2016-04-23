@@ -1,9 +1,13 @@
 <h2>Sign in</h2>
 <div>
-  <p>Enter country code (e.g. +1):</p>
-  <input type="text" id="country_code" />
-  <p>Enter phone number without spaces (e.g. 444555666):</p>
-  <input type="text" id="phone_num"/>
+  <div style="display: inline-block; width: 200px;">
+    <p>Country code (e.g. +1):</p>
+    <input type="text" id="country_code" />
+  </div>
+  <div style="display: inline-block; width: 500px;">
+    <p>Phone number without spaces (e.g. 444555666):</p>
+    <input type="text" id="phone_num"/>
+  </div>
   <div>
     <button onclick="phone_btn_onclick();">Login via SMS</button>
   </div>
